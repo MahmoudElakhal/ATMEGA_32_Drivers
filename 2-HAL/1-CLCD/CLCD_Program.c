@@ -5,9 +5,9 @@
  *      Author: Softlaptop
  */
 
-#include "../../STD_TYPES.h"
+#include "STD_TYPES.h"
 #include <util/delay.h>
-#include "../../MCAL/DIO/DIO_interface.h"
+#include "DIO_interface.h"
 #include "CLCD_Interface.h"
 #include "CLCD_Config.h"
 
@@ -114,61 +114,81 @@ void CLCD_VoidWriteSpecialCharacter(u8 * Copypu8Pattern , u8 Copy_u8PatternNumbe
 	CLCD_VoidSendData(Copy_u8PatternNumber);
 }
 
-void CLCD_voidWriteNumber(s32 Copy_u32Number)
+void CLCD_voidSendNumber   ( u32 Copy_u32Number    )
 {
-	if (Copy_u32Number <0)
-	{
-		Copy_u32Number = Copy_u32Number * (-1);
-		LCD_vidSendChar('-');
-	}
-	s32 rev =0;
-	u8 flag =0;
 
-	while(Copy_u32Number!=0)
+	u32 Local_u32Reversed = 1 ;
+
+	if( Copy_u32Number == 0 )
 	{
-		rev = rev*10 + Copy_u32Number%10;
-		if (rev == 0 )
+		CLCD_VoidSendData ('0');
+	}
+
+	else{
+
+		while( Copy_u32Number != 0 )
 		{
-			flag ++;
+			Local_u32Reversed = ( Local_u32Reversed * 10 ) + ( Copy_u32Number % 10 );
+			Copy_u32Number /= 10 ;
 		}
-		Copy_u32Number/=10;
-	}
-	while (rev!=0)
-	{
-		LCD_vidSendChar((rev%10)+'0');
-		rev /= 10;
-	}
-	if (flag !=0)
-	{
-		while(flag!=0)
+		while( Local_u32Reversed != 1 )
 		{
-			LCD_vidSendChar('0');
-			flag --;
+			CLCD_VoidSendData ( ( Local_u32Reversed % 10 ) + 48 );
+			Local_u32Reversed /= 10 ;
 		}
+
 	}
+
 }
 
-/*void LCD_VoidWriteNumber(u16 Copy_u32Number)
+void CLCD_voidSendFloatNumber(f64 number)
 {
-	u16 counter = 0  , Arr[5] , Temp ;
-	Temp = Copy_u32Number ;
-	/*Calculating Number Digits*/
-/*	while(Copy_u32Number !=0)
+	s8 i=0,j=0;
+	u32 x=number;
+	u8 base_NUM[10]={0};
+	f64 y=0;
+	if (number<0)
 	{
-		Copy_u32Number = Copy_u32Number / 10 ;
-		counter++;
+		number*=-1;
+		x=number;
+		CLCD_VoidSendData('-');
+	}
+	y=(((number+1.0)-x)*10000000);
+	while(x !=0)
+	{
+		base_NUM[i++] = x % 10;
+		x/=10;
+	}
+	u8 k=i--;
+	while(i>=0)
+	{
+		CLCD_VoidSendData(base_NUM[i--]+48);
+	}
+	u8 F_NUM[10]={0};
+	i=0;
+	u32 z=y;
+	CLCD_VoidSendData('.');
+	while(z !=0)
+	{
+		F_NUM[i++] = z % 10;
+		z/=10;
+	}
+	i-=2;
+	for(j=0;j<10;j++)
+	{
+		if(F_NUM[j]==0)
+		{
+			F_NUM[j]='k';
+		}
+		else
+		{
+			break;
+		}
+	}
+	while(F_NUM[i]!='k'&& k!=7)
+	{
+		CLCD_VoidSendData(F_NUM[i--]+48);
+		k++;
 	}
 
-	/*Saving Digits of input number into Array*/
-/*	for (u8  i = 0 ; i < counter ;i++)
-	{
-		Arr[i] = Temp % 10 ;
-		Temp = Temp/ 10 ;
-	}
-	/*Send Number to LCD*/
-/*	for (u8  i = counter-1 ; i >= 0;i--)
-	{
-		CLCD_VoidSendData(Arr[i]);
-	}
 }
- */

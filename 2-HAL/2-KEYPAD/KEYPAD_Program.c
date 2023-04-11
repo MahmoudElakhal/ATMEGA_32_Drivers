@@ -40,7 +40,7 @@ u8 KEYPAD_u8GetPressedKey(void)
 				//Value is before the variable to send error if it`s not true
 				while(DIO_u8PIN_LOW == Local_u8PinState)
 				{
-					DIO_u8SetPinValue(KEYPAD_PORT ,Local_u8KEPYAD_ColumnArr[Local_u8ColumnIndex] ,DIO_u8PIN_LOW);
+					DIO_u8GetPinValue(KEYPAD_PORT , Local_u8KEPYAD_RowArr[Local_u8RowIndex] , &Local_u8PinState);
 				}
 				return Local_u8PressedKey;
 			}

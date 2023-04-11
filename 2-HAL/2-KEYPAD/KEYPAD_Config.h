@@ -22,9 +22,9 @@
 #define KEYPAD_ROW2_PIN		   DIO_u8PIN6
 #define KEYPAD_ROW3_PIN		   DIO_u8PIN7
 
-#define KEYPAD_NO_PRESSED_KEY  0xff
 
-#define KEYPAD_ARR_VAL  {{1,2,3,4},{5,6,7,8},{9,10,11,12},{13,14,15,16}}
+
+#define KEYPAD_ARR_VAL  {{7,8,9,'+'},{4,5,6,'-'},{1,2,3,'/'},{'#',0,'=','*'}}
 
 
 
