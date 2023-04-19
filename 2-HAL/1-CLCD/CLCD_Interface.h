@@ -24,8 +24,6 @@ void CLCD_VoidGoToXY (u8 Copy_u8XPos , u8 Copy_u8YPos);
 
 void CLCD_VoidWriteSpecialCharacter(u8 * Copypu8Pattern , u8 Copy_u8PatternNumber , u8 Copy_u8XPos , u8 Copy_u8YPos );
 
-void LCD_VoidWriteNumber(u16 Copy_u32Number);
-
 void CLCD_voidSendNumber( u32 Copy_u32Number);
 
 void CLCD_voidSendFloatNumber(f64 number);
